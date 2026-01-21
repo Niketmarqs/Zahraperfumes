@@ -22,107 +22,65 @@ const produtos = [
 
 let carrinho = [];
 
-// FUNÇÃO PARA CARREGAR OS PRODUTOS NA TELA
-function carregarProdutos() {
-    const fem = document.getElementById('lista-femininos');
-    const masc = document.getElementById('lista-masculinos');
-    
-    // Limpa antes de carregar
-    if(fem) fem.innerHTML = "";
-    if(masc) masc.innerHTML = "";
+const lista = document.getElementById("lista-produtos");
 
-    produtos.forEach(p => {
-        const html = `
-            <div class="produto-card">
-                <div class="img-box">
-                    <img src="imagens/${p.imagem}" alt="${p.nome}" onerror="this.src='logopaulo.jpeg'">
-                </div>
-                <div class="info">
-                    <h3>${p.nome}</h3>
-                    <span class="preco">R$ ${p.preco},00</span>
-                    <button class="btn-add" onclick="add(${p.id})">COMPRAR</button>
-                </div>
+produtos.forEach(p => {
+    lista.innerHTML += `
+        <div class="produto-card">
+            <div class="img-produto">
+                <img src="imagens/${p.imagem}" onerror="this.src='imagens/logo.png'">
+            </div>
+
+            <h3 class="nome-produto">${p.nome}</h3>
+
+            <span class="preco-atual">R$ ${p.preco},00</span>
+            <div class="parcelamento">
+                ou 2x de R$ ${(p.preco / 2).toFixed(2)} sem juros
+            </div>
+
+            <button class="btn-comprar" onclick="addCarrinho(${p.id})">
+                COMPRAR
+            </button>
+        </div>
+    `;
+});
+
+function addCarrinho(id) {
+    carrinho.push(produtos.find(p => p.id === id));
+    atualizarCarrinho();
+}
+
+function atualizarCarrinho() {
+    const itens = document.getElementById("cart-items");
+    const totalEl = document.getElementById("cart-total");
+    const countEl = document.getElementById("cart-count");
+
+    let total = 0;
+    itens.innerHTML = "";
+
+    carrinho.forEach((p, i) => {
+        total += p.preco;
+        itens.innerHTML += `
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span>${p.nome}</span>
+                <strong>R$ ${p.preco}</strong>
             </div>
         `;
-        
-        if(p.cat === "F" && fem) {
-            fem.innerHTML += html;
-        } else if(p.cat === "M" && masc) {
-            masc.innerHTML += html;
-        }
     });
+
+    totalEl.innerText = total.toFixed(2);
+    countEl.innerText = carrinho.length;
 }
 
-// ADICIONAR AO CARRINHO
-function add(id) {
-    const p = produtos.find(x => x.id === id);
-    if (p) {
-        carrinho.push(p);
-        atualizar();
-        // Opcional: abrir o carrinho automaticamente ao adicionar
-        // toggleCart(); 
-    }
-}
-
-// ATUALIZAR INTERFACE DO CARRINHO
-function atualizar() {
-    const itens = document.getElementById('cart-items');
-    const totalEl = document.getElementById('cart-total');
-    const countEl = document.getElementById('cart-count');
-    let total = 0;
-
-    if(itens) {
-        itens.innerHTML = "";
-        carrinho.forEach((p, i) => {
-            total += p.preco;
-            itens.innerHTML += `
-                <div style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; color:#000;">
-                    <span style="font-size:12px;">${p.nome}</span>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <strong style="font-size:14px;">R$ ${p.preco}</strong>
-                        <button onclick="remover(${i})" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">X</button>
-                    </div>
-                </div>`;
-        });
-    }
-
-    if(totalEl) totalEl.innerText = `R$ ${total.toFixed(2)}`;
-    if(countEl) countEl.innerText = carrinho.length;
-}
-
-// REMOVER ITEM
-function remover(i) {
-    carrinho.splice(i, 1);
-    atualizar();
-}
-
-// ABRIR/FECHAR CARRINHO
 function toggleCart() {
-    const sidebar = document.getElementById('sidebar-cart');
-    const overlay = document.getElementById('overlay');
-    if(sidebar && overlay) {
-        sidebar.classList.toggle('active');
-        overlay.classList.toggle('active');
-    }
+    const cart = document.getElementById("sidebar-cart");
+    const overlay = document.getElementById("overlay");
+
+    cart.classList.toggle("active");
+    overlay.style.display = cart.classList.contains("active") ? "block" : "none";
 }
 
-// REDIRECIONAR PARA PAGAMENTO
-function irParaPagamento() {
-    if(carrinho.length === 0) {
-        alert("Seu carrinho está vazio!");
-        return;
-    }
-    
-    const total = carrinho.reduce((a, b) => a + b.preco, 0);
-    let resumo = "Olá! Gostaria de encomendar os seguintes perfumes:\n\n";
-    carrinho.forEach(p => resumo += `• ${p.nome} (R$ ${p.preco})\n`);
-
-    // Salva no navegador para a página de pagamento ler
-    localStorage.setItem('resumoPedido', resumo);
-    localStorage.setItem('totalPedido', total.toFixed(2));
-
+function finalizarCompra() {
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
     window.location.href = "pagamento.html";
 }
-
-// INICIALIZAÇÃO
-window.onload = carregarProdutos;
