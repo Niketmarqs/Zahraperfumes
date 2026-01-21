@@ -24,6 +24,14 @@
     <div id="lista-produtos" class="grid-produtos"></div>
 </main>
 
+    <div class="filtro">
+    <select onchange="setFiltro(this.value)">
+        <option value="normal">Ordenar por</option>
+        <option value="caros">🔥 Destaques (mais caros)</option>
+        <option value="az">🔤 Nome (A → Z)</option>
+    </select>
+</div>
+
 <!-- CARRINHO LATERAL -->
 <div id="sidebar-cart" class="carrinho">
     <div class="carrinho-header">
@@ -46,6 +54,7 @@
 <script src="produtos.js"></script>
 </body>
 </html>
+
 
 
 
