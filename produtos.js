@@ -1,3 +1,4 @@
+/* ===================== PRODUTOS ===================== */
 const produtos = [
     { id: 1, nome: "Khanjar", preco: 450, imagem: "Khanjar.png" },
     { id: 2, nome: "Her Confession", preco: 320, imagem: "her_confession.jpg" },
@@ -19,28 +20,24 @@ const produtos = [
     { id: 18, nome: "Vulcan Feu", preco: 410, imagem: "vulcan.jpg" }
 ];
 
+/* ===================== ESTADO ===================== */
 let carrinho = [];
-let filtroAtual = "normal";
+let produtosAtuais = [...produtos];
 
-function renderProdutos() {
-    const lista = document.getElementById("lista-produtos");
-    lista.innerHTML = "";
+/* ===================== RENDER PRODUTOS ===================== */
+function renderProdutos(lista) {
+    const container = document.getElementById("lista-produtos");
+    if (!container) return;
 
-    let listaProdutos = [...produtos];
+    container.innerHTML = "";
 
-    if (filtroAtual === "caros") {
-        listaProdutos.sort((a, b) => b.preco - a.preco);
-    }
-
-    if (filtroAtual === "az") {
-        listaProdutos.sort((a, b) => a.nome.localeCompare(b.nome));
-    }
-
-    listaProdutos.forEach(p => {
-        lista.innerHTML += `
+    lista.forEach(p => {
+        container.innerHTML += `
             <div class="produto-card">
                 <div class="img-produto">
-                    <img src="imagens/${p.imagem}" onerror="this.src='imagens/logo.png'">
+                    <img src="imagens/${p.imagem}" 
+                         alt="${p.nome}"
+                         onerror="this.src='imagens/logo.png'">
                 </div>
 
                 <h3 class="nome-produto">${p.nome}</h3>
@@ -58,16 +55,19 @@ function renderProdutos() {
     });
 }
 
-function aplicarFiltro(valor) {
-    filtroAtual = valor;
-    renderProdutos();
-}
-
+/* ===================== CARRINHO ===================== */
 function addCarrinho(id) {
     const produto = produtos.find(p => p.id === id);
+    if (!produto) return;
+
     carrinho.push(produto);
     atualizarCarrinho();
-    toggleCart(); // 🔥 abre automaticamente
+    abrirCarrinho();
+}
+
+function removerCarrinho(index) {
+    carrinho.splice(index, 1);
+    atualizarCarrinho();
 }
 
 function atualizarCarrinho() {
@@ -75,15 +75,21 @@ function atualizarCarrinho() {
     const totalEl = document.getElementById("cart-total");
     const countEl = document.getElementById("cart-count");
 
-    itens.innerHTML = "";
     let total = 0;
+    itens.innerHTML = "";
 
     carrinho.forEach((p, i) => {
         total += p.preco;
         itens.innerHTML += `
-            <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
                 <span>${p.nome}</span>
-                <strong>R$ ${p.preco}</strong>
+                <div style="display:flex;gap:10px;align-items:center;">
+                    <strong>R$ ${p.preco}</strong>
+                    <button onclick="removerCarrinho(${i})"
+                        style="border:none;background:none;color:red;font-weight:700;cursor:pointer;">
+                        ✕
+                    </button>
+                </div>
             </div>
         `;
     });
@@ -92,18 +98,45 @@ function atualizarCarrinho() {
     countEl.innerText = carrinho.length;
 }
 
+/* ===================== CARRINHO ABRIR / FECHAR ===================== */
+function abrirCarrinho() {
+    document.getElementById("sidebar-cart").classList.add("active");
+    document.getElementById("overlay").style.display = "block";
+}
+
 function toggleCart() {
     const cart = document.getElementById("sidebar-cart");
     const overlay = document.getElementById("overlay");
 
     cart.classList.toggle("active");
-    overlay.classList.toggle("active");
+    overlay.style.display = cart.classList.contains("active") ? "block" : "none";
 }
 
+/* ===================== FINALIZAR ===================== */
 function finalizarCompra() {
+    if (carrinho.length === 0) {
+        alert("Seu carrinho está vazio.");
+        return;
+    }
+
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
     window.location.href = "pagamento.html";
 }
 
-window.onload = renderProdutos;
+/* ===================== FILTROS ===================== */
+function aplicarFiltro(tipo) {
+    if (tipo === "caros") {
+        produtosAtuais.sort((a, b) => b.preco - a.preco);
+    } else if (tipo === "az") {
+        produtosAtuais.sort((a, b) => a.nome.localeCompare(b.nome));
+    } else {
+        produtosAtuais = [...produtos];
+    }
 
+    renderProdutos(produtosAtuais);
+}
+
+/* ===================== INIT ===================== */
+document.addEventListener("DOMContentLoaded", () => {
+    renderProdutos(produtos);
+});
