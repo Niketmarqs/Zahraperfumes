@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfumes Árabes - Premium</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="C:\Users\Usuário\Documents\programas_exemplo.html\css\cssdaloja.css">
+
+    <!-- Fonte -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <img 
+            src="C:\Users\Usuário\Documents\programas_exemplo.html\imagem\logopaulo.jpeg" 
+            alt="Logo" 
+            class="logo"
+        >
+
+        <button class="cart-toggle" onclick="toggleCart()">
+            🛒 Carrinho (<span id="cart-count">0</span>)
+        </button>
+    </div>
+</header>
+
+<main>
+    <div class="categoria-secao">
+        <h2 class="titulo-categoria">Perfumes Femininos</h2>
+        <div id="lista-femininos" class="grid-produtos"></div>
+    </div>
+
+    <div class="categoria-secao">
+        <h2 class="titulo-categoria">Perfumes Masculinos</h2>
+        <div id="lista-masculinos" class="grid-produtos"></div>
+    </div>
+</main>
+
+<!-- ✅ BOTÃO WHATSAPP SEM IMAGEM -->
+<a 
+    href="https://wa.me/5500000000000"
+    class="btn-suporte-mini"
+    target="_blank"
+>
+    Tirar dúvidas<br>com Suporte
+</a>
+
+<!-- ================= CARRINHO ================= -->
+<div id="sidebar-cart" class="carrinho-lateral">
+    <div class="cart-header">
+        <h3>Seu Carrinho</h3>
+        <button class="fechar-cart" onclick="toggleCart()">×</button>
+    </div>
+
+    <div id="cart-items" class="corpo-carrinho"></div>
+
+    <div class="cart-footer">
+        <div class="total-box">
+            Total: <span id="cart-total">R$ 0,00</span>
+        </div>
+        <button class="btn-finalizar" onclick="irParaPagamento()">
+            Finalizar Compra
+        </button>
+    </div>
+</div>
+
+<div id="overlay" onclick="toggleCart()"></div>
+
+<!-- JS -->
+<script src="C:\Users\Usuário\Documents\programas_exemplo.html\js\produtos.js"></script>
+
+</body>
+</html>
