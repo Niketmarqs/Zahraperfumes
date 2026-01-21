@@ -3,7 +3,7 @@ const produtos = [
     { id: 1, nome: "Khanjar", preco: 450, imagem: "Khanjar.png" },
     { id: 2, nome: "Her Confession", preco: 320, imagem: "her_confession.jpg" },
     { id: 3, nome: "Attar Al Wesal Al Wataniah", preco: 260, imagem: "Attar Al Wesal Al Wataniah.jpeg" },
-    { id: 4, nome: "Lattafa Yara Rosa", preco: 260, imagem: "yara_rosa.jpg" },
+    { id: 4, nome: "Lattafa Yara Rosa", preco: 260, imagem: "yara_rosa.jfif" },
     { id: 5, nome: "Lattafa Asad Preto Elixir", preco: 360, imagem: "asad_elixir.jpg" },
     { id: 6, nome: "Lattafa Asad Azul", preco: 270, imagem: "asad_azul.jpg" },
     { id: 7, nome: "Winners Trophy", preco: 370, imagem: "winners.jpg" },
@@ -140,3 +140,4 @@ function aplicarFiltro(tipo) {
 document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
 });
+
