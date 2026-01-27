@@ -1,57 +1,44 @@
-/* ===================== PRODUTOS ===================== */
 const produtos = [
-    { id: 1, nome: "Khanjar", preco: 450, imagem: "khanjar.png" },
-    { id: 2, nome: "Her Confession", preco: 320, imagem: "her_confession.jpg" },
-    { id: 3, nome: "Attar Al Wesal", preco: 260, imagem: "attar_wesal.jpg" },
-    { id: 4, nome: "Lattafa Yara Rosa", preco: 260, imagem: "yara_rosa.jpg" },
-    { id: 5, nome: "Asad Elixir", preco: 360, imagem: "asad_elixir.jpg" },
-    { id: 6, nome: "Asad Azul", preco: 270, imagem: "asad_azul.jpg" },
-    { id: 7, nome: "Winners Trophy", preco: 370, imagem: "winners.jpg" },
-    { id: 8, nome: "Asad Preto", preco: 260, imagem: "asad_preto.jpg" },
-    { id: 9, nome: "Sabah Al Ward", preco: 250, imagem: "sabah.jpg" },
-    { id: 10, nome: "Club de Nuit", preco: 350, imagem: "club_nuit.jpg" },
-    { id: 11, nome: "Fakhar Rose", preco: 290, imagem: "fakhar.jpg" },
-    { id: 12, nome: "Asad Bourbon", preco: 300, imagem: "asad_bourbon.jpg" }
+    { id: 1, nome: "Khanjar", preco: 450, imagem: "Khanjar.png" },
+    { id: 2, nome: "Her Confession", preco: 320, imagem: "sua_confissão.jpg" },
+    { id: 3, nome: "Attar Al Wesal Al Wataniah", preco: 260, imagem: "Attar Al Wesal Al Wataniah.jpeg" },
+    { id: 4, nome: "Lattafa Yara Rosa", preco: 260, imagem: "Lattafa Yara Rosa.jfif" },
+    { id: 5, nome: "Lattafa Asad Elixir", preco: 360, imagem: "LattafaAsadPretoElixir.jpg" },
+    { id: 6, nome: "Lattafa Asad Azul", preco: 270, imagem: "Lattafa Asad Azul.jpeg" },
+    { id: 7, nome: "Winners Trophy", preco: 370, imagem: "Troféu dos Vencedores.jpeg" },
+    { id: 8, nome: "Asad Preto Normal", preco: 260, imagem: "Asad Preto Normal.jpeg" },
+    { id: 9, nome: "Sabah Al Ward Al Wataniah", preco: 250, imagem: "Sabah al Ward Al Wataniah.png" },
+    { id: 10, nome: "Club de Nuit Intense", preco: 350, imagem: "Clube de Noite Intensa.jpeg" },
+    { id: 11, nome: "Lattafa Fakhar Rose", preco: 290, imagem: "Lattafa Fakhar Rose.png" },
+    { id: 12, nome: "Asad Bourbon", preco: 300, imagem: "Asad Bourbon.jpeg" }
 ];
 
-/* ===================== ESTADO ===================== */
 let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 let produtosAtuais = [...produtos];
 
-/* ===================== RENDER PRODUTOS ===================== */
+/* RENDER */
 function renderProdutos(lista) {
     const container = document.getElementById("lista-produtos");
     if (!container) return;
-
     container.innerHTML = "";
 
     lista.forEach(p => {
         container.innerHTML += `
             <div class="produto-card">
                 <div class="img-produto">
-                    <img src="imagens/${p.imagem}" alt="${p.nome}">
+                    <img src="${p.imagem}" alt="${p.nome}">
                 </div>
-
-                <h3 class="nome-produto">${p.nome}</h3>
-
-                <span class="preco-atual">R$ ${p.preco.toFixed(2)}</span>
-                <div class="parcelamento">
-                    ou 2x de R$ ${(p.preco / 2).toFixed(2)} sem juros
-                </div>
-
-                <button class="btn-comprar" onclick="addCarrinho(${p.id})">
-                    COMPRAR
-                </button>
+                <h3>${p.nome}</h3>
+                <span>R$ ${p.preco.toFixed(2)}</span>
+                <button onclick="addCarrinho(${p.id})">COMPRAR</button>
             </div>
         `;
     });
 }
 
-/* ===================== CARRINHO ===================== */
+/* CARRINHO */
 function addCarrinho(id) {
     const produto = produtos.find(p => p.id === id);
-    if (!produto) return;
-
     carrinho.push(produto);
     salvarCarrinho();
     atualizarCarrinho();
@@ -73,74 +60,55 @@ function atualizarCarrinho() {
     const totalEl = document.getElementById("cart-total");
     const countEl = document.getElementById("cart-count");
 
-    if (!itens) return;
-
     let total = 0;
     itens.innerHTML = "";
 
     carrinho.forEach((p, i) => {
         total += p.preco;
         itens.innerHTML += `
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <span>${p.nome}</span>
-                <div style="display:flex;gap:10px;align-items:center;">
-                    <strong>R$ ${p.preco.toFixed(2)}</strong>
-                    <button onclick="removerCarrinho(${i})"
-                        style="border:none;background:none;color:red;font-weight:700;cursor:pointer;">
-                        ✕
-                    </button>
-                </div>
+            <div>
+                ${p.nome} - R$ ${p.preco.toFixed(2)}
+                <button onclick="removerCarrinho(${i})">✕</button>
             </div>
         `;
     });
 
-    if (totalEl) totalEl.innerText = total.toFixed(2);
-    if (countEl) countEl.innerText = carrinho.length;
+    totalEl.innerText = total.toFixed(2);
+    countEl.innerText = carrinho.length;
 }
 
-/* ===================== CARRINHO ABRIR / FECHAR ===================== */
+/* UI */
 function abrirCarrinho() {
-    const cart = document.getElementById("sidebar-cart");
-    const overlay = document.getElementById("overlay");
-    if (cart) cart.classList.add("active");
-    if (overlay) overlay.style.display = "block";
+    document.getElementById("sidebar-cart").classList.add("active");
+    document.getElementById("overlay").style.display = "block";
 }
 
 function toggleCart() {
     const cart = document.getElementById("sidebar-cart");
     const overlay = document.getElementById("overlay");
-
-    if (!cart || !overlay) return;
-
     cart.classList.toggle("active");
     overlay.style.display = cart.classList.contains("active") ? "block" : "none";
 }
 
-/* ===================== FINALIZAR COMPRA ===================== */
+/* FINALIZAR */
 function finalizarCompra() {
     if (carrinho.length === 0) {
         alert("Seu carrinho está vazio.");
         return;
     }
-
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
     window.location.href = "pagamento_conclusao.html";
 }
 
-/* ===================== FILTROS ===================== */
+/* FILTRO */
 function aplicarFiltro(tipo) {
-    if (tipo === "caros") {
-        produtosAtuais.sort((a, b) => b.preco - a.preco);
-    } else if (tipo === "az") {
-        produtosAtuais.sort((a, b) => a.nome.localeCompare(b.nome));
-    } else {
-        produtosAtuais = [...produtos];
-    }
-
+    if (tipo === "caros") produtosAtuais.sort((a,b)=>b.preco-a.preco);
+    else if (tipo === "az") produtosAtuais.sort((a,b)=>a.nome.localeCompare(b.nome));
+    else produtosAtuais = [...produtos];
     renderProdutos(produtosAtuais);
 }
 
-/* ===================== INIT ===================== */
+/* INIT */
 document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
     atualizarCarrinho();
