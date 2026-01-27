@@ -1,3 +1,4 @@
+/* ================= PRODUTOS (18 MODELOS) ================= */
 const produtos = [
     { id: 1, nome: "Khanjar", preco: 450, imagem: "Khanjar.png" },
     { id: 2, nome: "Her Confession", preco: 320, imagem: "sua_confissão.jpg" },
@@ -10,13 +11,20 @@ const produtos = [
     { id: 9, nome: "Sabah Al Ward Al Wataniah", preco: 250, imagem: "Sabah al Ward Al Wataniah.png" },
     { id: 10, nome: "Club de Nuit Intense", preco: 350, imagem: "Clube de Noite Intensa.jpeg" },
     { id: 11, nome: "Lattafa Fakhar Rose", preco: 290, imagem: "Lattafa Fakhar Rose.png" },
-    { id: 12, nome: "Asad Bourbon", preco: 300, imagem: "Asad Bourbon.jpeg" }
+    { id: 12, nome: "Asad Bourbon", preco: 300, imagem: "Asad Bourbon.jpeg" },
+    { id: 13, nome: "Lattafa Dourado", preco: 265, imagem: "lattafa_dourado.jpg" },
+    { id: 14, nome: "His Confession", preco: 350, imagem: "his_confession.jpg" },
+    { id: 15, nome: "The Kingdom", preco: 350, imagem: "kingdom.jpg" },
+    { id: 16, nome: "Al Dana", preco: 400, imagem: "al_dana.jpg" },
+    { id: 17, nome: "Manaal", preco: 330, imagem: "manaal.jpg" },
+    { id: 18, nome: "Vulcan Feu", preco: 410, imagem: "vulcan.jpg" }
 ];
 
+/* ================= ESTADO ================= */
 let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 let produtosAtuais = [...produtos];
 
-/* RENDER */
+/* ================= RENDER ================= */
 function renderProdutos(lista) {
     const container = document.getElementById("lista-produtos");
     if (!container) return;
@@ -28,17 +36,34 @@ function renderProdutos(lista) {
                 <div class="img-produto">
                     <img src="${p.imagem}" alt="${p.nome}">
                 </div>
-                <h3>${p.nome}</h3>
-                <span>R$ ${p.preco.toFixed(2)}</span>
-                <button onclick="addCarrinho(${p.id})">COMPRAR</button>
+
+                <h3 class="nome-produto">${p.nome}</h3>
+                <span class="preco-atual">R$ ${p.preco.toFixed(2)}</span>
+                <div class="parcelamento">
+                    ou 2x de R$ ${(p.preco/2).toFixed(2)} sem juros
+                </div>
+
+                <button class="btn-comprar" data-id="${p.id}">
+                    COMPRAR
+                </button>
             </div>
         `;
     });
 }
 
-/* CARRINHO */
+/* ================= EVENTO GLOBAL DE COMPRA ================= */
+document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("btn-comprar")) {
+        const id = parseInt(e.target.getAttribute("data-id"));
+        addCarrinho(id);
+    }
+});
+
+/* ================= CARRINHO ================= */
 function addCarrinho(id) {
     const produto = produtos.find(p => p.id === id);
+    if (!produto) return;
+
     carrinho.push(produto);
     salvarCarrinho();
     atualizarCarrinho();
@@ -59,6 +84,7 @@ function atualizarCarrinho() {
     const itens = document.getElementById("cart-items");
     const totalEl = document.getElementById("cart-total");
     const countEl = document.getElementById("cart-count");
+    if (!itens) return;
 
     let total = 0;
     itens.innerHTML = "";
@@ -66,9 +92,12 @@ function atualizarCarrinho() {
     carrinho.forEach((p, i) => {
         total += p.preco;
         itens.innerHTML += `
-            <div>
-                ${p.nome} - R$ ${p.preco.toFixed(2)}
-                <button onclick="removerCarrinho(${i})">✕</button>
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                <span>${p.nome}</span>
+                <div>
+                    R$ ${p.preco.toFixed(2)}
+                    <button onclick="removerCarrinho(${i})">✕</button>
+                </div>
             </div>
         `;
     });
@@ -77,7 +106,7 @@ function atualizarCarrinho() {
     countEl.innerText = carrinho.length;
 }
 
-/* UI */
+/* ================= UI ================= */
 function abrirCarrinho() {
     document.getElementById("sidebar-cart").classList.add("active");
     document.getElementById("overlay").style.display = "block";
@@ -90,7 +119,7 @@ function toggleCart() {
     overlay.style.display = cart.classList.contains("active") ? "block" : "none";
 }
 
-/* FINALIZAR */
+/* ================= FINALIZAR ================= */
 function finalizarCompra() {
     if (carrinho.length === 0) {
         alert("Seu carrinho está vazio.");
@@ -100,7 +129,7 @@ function finalizarCompra() {
     window.location.href = "pagamento_conclusao.html";
 }
 
-/* FILTRO */
+/* ================= FILTRO ================= */
 function aplicarFiltro(tipo) {
     if (tipo === "caros") produtosAtuais.sort((a,b)=>b.preco-a.preco);
     else if (tipo === "az") produtosAtuais.sort((a,b)=>a.nome.localeCompare(b.nome));
@@ -108,8 +137,10 @@ function aplicarFiltro(tipo) {
     renderProdutos(produtosAtuais);
 }
 
-/* INIT */
+/* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
     atualizarCarrinho();
 });
+
+
