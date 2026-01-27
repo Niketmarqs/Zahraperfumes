@@ -15,7 +15,7 @@ const produtos = [
     { id: 13, nome: "Lattafa Dourado", preco: 265, imagem: "lattafa_dourado.jpg" },
     { id: 14, nome: "His Confession", preco: 350, imagem: "his_confession.jpg" },
     { id: 15, nome: "The Kingdom", preco: 350, imagem: "The Kingdom.jfif" },
-    { id: 16, nome: "Al Dana", preco: 400, imagem: "al_dana.jpg" },
+    { id: 16, nome: "Al Dana", preco: 400, imagem: "Al Dana.jpeg" },
     { id: 17, nome: "Manaal", preco: 330, imagem: "Manaal.jpg" },
     { id: 18, nome: "Vulcan Feu", preco: 410, imagem: "VulcanFeu.jfif" }
 ];
@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
     atualizarCarrinho();
 });
+
 
 
 
