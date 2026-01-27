@@ -126,7 +126,7 @@ function finalizarCompra() {
         return;
     }
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
-    window.location.href = "pagamento_conclusao.html";
+    window.location.href = "Pagamento_conclusão.html";
 }
 
 /* ================= FILTRO ================= */
@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
     atualizarCarrinho();
 });
+
 
 
 
