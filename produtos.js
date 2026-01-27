@@ -6,7 +6,7 @@ const produtos = [
     { id: 4, nome: "Lattafa Yara Rosa", preco: 260, imagem: "Lattafa Yara Rosa.jfif" },
     { id: 5, nome: "Lattafa Asad Elixir", preco: 360, imagem: "LattafaAsadPretoElixir.jpg" },
     { id: 6, nome: "Lattafa Asad Azul", preco: 270, imagem: "Lattafa Asad Azul.jpeg" },
-    { id: 7, nome: "Winners Trophy", preco: 370, imagem: "Winners Trophy.jpeg" },
+    { id: 7, nome: "Winners Trophy", preco: 370, imagem: "Winners Trophy.jfif" },
     { id: 8, nome: "Asad Preto Normal", preco: 260, imagem: "Asad Preto Normal.jpeg" },
     { id: 9, nome: "Sabah Al Ward Al Wataniah", preco: 250, imagem: "Sabah al Ward Al Wataniah.png" },
     { id: 10, nome: "Club de Nuit Intense", preco: 350, imagem: "Club de Nuit Intense.jfif" },
@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
     atualizarCarrinho();
 });
+
 
 
 
