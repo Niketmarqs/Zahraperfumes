@@ -8,7 +8,7 @@ const produtos = [
     { id: 6, nome: "Lattafa Asad Azul", preco: 270, imagem: "Lattafa Asad Azul.jpeg" },
     { id: 7, nome: "Winners Trophy", preco: 370, imagem: "Winners Trophy.jfif" },
     { id: 8, nome: "Asad Preto Normal", preco: 260, imagem: "Asad Preto Normal.jpeg" },
-    { id: 9, nome: "Sabah Al Ward Al Wataniah", preco: 250, imagem: "Sabah al Ward Al Wataniah.png" },
+    { id: 9, nome: "Sabah Al Ward Al Wataniah", preco: 250, imagem: "Sabah Al Ward Al Wataniah.jfif" },
     { id: 10, nome: "Club de Nuit Intense", preco: 350, imagem: "Club de Nuit Intense.jfif" },
     { id: 11, nome: "Lattafa Fakhar Rose", preco: 290, imagem: "Lattafa Fakhar Rose.png" },
     { id: 12, nome: "Asad Bourbon", preco: 300, imagem: "Asad Bourbon.jpeg" },
@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
     atualizarCarrinho();
 });
+
 
 
 
