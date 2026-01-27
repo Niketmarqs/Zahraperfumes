@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="cssdaloja.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<!-- HEADER -->
+<!-- ===== HEADER ===== -->
 <header class="header">
     <div class="container header-flex">
         <img src="logopaulo.png" class="logo" alt="Zahra Perfume">
@@ -21,25 +22,28 @@
     </div>
 </header>
 
-<!-- FILTRO -->
-<div class="container">
+<!-- ===== FILTRO ===== -->
+<section class="container">
     <div class="filtro">
         <select onchange="aplicarFiltro(this.value)">
             <option value="normal">Ordenar por</option>
-            <option value="caros"> Destaques </option>
+            <option value="caros">⭐ Destaques</option>
             <option value="az">🔤 Nome (A → Z)</option>
         </select>
     </div>
-</div>
+</section>
 
-<!-- LISTA DE PRODUTOS -->
+<!-- ===== PRODUTOS (JS VAI PREENCHER) ===== -->
 <main class="container">
     <h2 class="titulo">Perfumes Árabes</h2>
     <div id="lista-produtos" class="grid-produtos"></div>
 </main>
 
-<!-- CARRINHO LATERAL -->
-<div id="sidebar-cart" class="carrinho">
+<!-- ===== OVERLAY ESCURO ===== -->
+<div id="overlay" onclick="toggleCart()"></div>
+
+<!-- ===== CARRINHO LATERAL ===== -->
+<aside id="sidebar-cart" class="carrinho">
     <div class="carrinho-header">
         <h3>Seu Carrinho</h3>
         <button class="btn-fechar" onclick="toggleCart()">×</button>
@@ -54,20 +58,10 @@
             Finalizar Compra
         </button>
     </div>
-</div>
+</aside>
 
-<!-- OVERLAY -->
-<div id="overlay" onclick="toggleCart()"></div>
-
-<!-- JS -->
+<!-- ===== SCRIPT ===== -->
 <script src="produtos.js" defer></script>
 
 </body>
 </html>
-
-
-
-
-
-
-
