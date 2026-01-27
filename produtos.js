@@ -1,27 +1,21 @@
 /* ===================== PRODUTOS ===================== */
 const produtos = [
-    { id: 1, nome: "Khanjar", preco: 450, imagem: "Khanjar.png" },
+    { id: 1, nome: "Khanjar", preco: 450, imagem: "khanjar.png" },
     { id: 2, nome: "Her Confession", preco: 320, imagem: "her_confession.jpg" },
-    { id: 3, nome: "Attar Al Wesal Al Wataniah", preco: 260, imagem: "Attar Al Wesal Al Wataniah.jpeg" },
-    { id: 4, nome: "Lattafa Yara Rosa", preco: 260, imagem: "yara_rosa.jfif" },
-    { id: 5, nome: "Lattafa Asad Preto Elixir", preco: 360, imagem: "asad_elixir.jpg" },
-    { id: 6, nome: "Lattafa Asad Azul", preco: 270, imagem: "asad_azul.jpg" },
+    { id: 3, nome: "Attar Al Wesal", preco: 260, imagem: "attar_wesal.jpg" },
+    { id: 4, nome: "Lattafa Yara Rosa", preco: 260, imagem: "yara_rosa.jpg" },
+    { id: 5, nome: "Asad Elixir", preco: 360, imagem: "asad_elixir.jpg" },
+    { id: 6, nome: "Asad Azul", preco: 270, imagem: "asad_azul.jpg" },
     { id: 7, nome: "Winners Trophy", preco: 370, imagem: "winners.jpg" },
-    { id: 8, nome: "Asad Preto Normal", preco: 260, imagem: "LattafaAsadPretoElixir.jpg" },
-    { id: 9, nome: "Sabah Al Ward Al Wataniah", preco: 250, imagem: "sabah.jpg" },
-    { id: 10, nome: "Club de Nuit Intense", preco: 350, imagem: "club_nuit.jpg" },
-    { id: 11, nome: "Lattafa Fakhar Rose", preco: 290, imagem: "fakhar.jpg" },
-    { id: 12, nome: "Asad Bourbon", preco: 300, imagem: "asad_bourbon.jpg" },
-    { id: 13, nome: "Lattafa Dourado", preco: 265, imagem: "lattafa_dourado.jpg" },
-    { id: 14, nome: "His Confession", preco: 350, imagem: "his_confession.jpg" },
-    { id: 15, nome: "The Kingdom", preco: 350, imagem: "kingdom.jpg" },
-    { id: 16, nome: "Al Dana", preco: 400, imagem: "al_dana.jpg" },
-    { id: 17, nome: "Manaal", preco: 330, imagem: "manaal.jpg" },
-    { id: 18, nome: "Vulcan Feu", preco: 410, imagem: "vulcan.jpg" }
+    { id: 8, nome: "Asad Preto", preco: 260, imagem: "asad_preto.jpg" },
+    { id: 9, nome: "Sabah Al Ward", preco: 250, imagem: "sabah.jpg" },
+    { id: 10, nome: "Club de Nuit", preco: 350, imagem: "club_nuit.jpg" },
+    { id: 11, nome: "Fakhar Rose", preco: 290, imagem: "fakhar.jpg" },
+    { id: 12, nome: "Asad Bourbon", preco: 300, imagem: "asad_bourbon.jpg" }
 ];
 
 /* ===================== ESTADO ===================== */
-let carrinho = [];
+let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 let produtosAtuais = [...produtos];
 
 /* ===================== RENDER PRODUTOS ===================== */
@@ -35,14 +29,12 @@ function renderProdutos(lista) {
         container.innerHTML += `
             <div class="produto-card">
                 <div class="img-produto">
-                    <img src="imagens/${p.imagem}" 
-                         alt="${p.nome}"
-                         onerror="this.src='imagens/logo.png'">
+                    <img src="imagens/${p.imagem}" alt="${p.nome}">
                 </div>
 
                 <h3 class="nome-produto">${p.nome}</h3>
 
-                <span class="preco-atual">R$ ${p.preco},00</span>
+                <span class="preco-atual">R$ ${p.preco.toFixed(2)}</span>
                 <div class="parcelamento">
                     ou 2x de R$ ${(p.preco / 2).toFixed(2)} sem juros
                 </div>
@@ -61,13 +53,19 @@ function addCarrinho(id) {
     if (!produto) return;
 
     carrinho.push(produto);
+    salvarCarrinho();
     atualizarCarrinho();
     abrirCarrinho();
 }
 
 function removerCarrinho(index) {
     carrinho.splice(index, 1);
+    salvarCarrinho();
     atualizarCarrinho();
+}
+
+function salvarCarrinho() {
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
 }
 
 function atualizarCarrinho() {
@@ -75,16 +73,18 @@ function atualizarCarrinho() {
     const totalEl = document.getElementById("cart-total");
     const countEl = document.getElementById("cart-count");
 
+    if (!itens) return;
+
     let total = 0;
     itens.innerHTML = "";
 
     carrinho.forEach((p, i) => {
         total += p.preco;
         itens.innerHTML += `
-            <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
                 <span>${p.nome}</span>
                 <div style="display:flex;gap:10px;align-items:center;">
-                    <strong>R$ ${p.preco}</strong>
+                    <strong>R$ ${p.preco.toFixed(2)}</strong>
                     <button onclick="removerCarrinho(${i})"
                         style="border:none;background:none;color:red;font-weight:700;cursor:pointer;">
                         ✕
@@ -94,25 +94,29 @@ function atualizarCarrinho() {
         `;
     });
 
-    totalEl.innerText = total.toFixed(2);
-    countEl.innerText = carrinho.length;
+    if (totalEl) totalEl.innerText = total.toFixed(2);
+    if (countEl) countEl.innerText = carrinho.length;
 }
 
 /* ===================== CARRINHO ABRIR / FECHAR ===================== */
 function abrirCarrinho() {
-    document.getElementById("sidebar-cart").classList.add("active");
-    document.getElementById("overlay").style.display = "block";
+    const cart = document.getElementById("sidebar-cart");
+    const overlay = document.getElementById("overlay");
+    if (cart) cart.classList.add("active");
+    if (overlay) overlay.style.display = "block";
 }
 
 function toggleCart() {
     const cart = document.getElementById("sidebar-cart");
     const overlay = document.getElementById("overlay");
 
+    if (!cart || !overlay) return;
+
     cart.classList.toggle("active");
     overlay.style.display = cart.classList.contains("active") ? "block" : "none";
 }
 
-/* ===================== FINALIZAR ===================== */
+/* ===================== FINALIZAR COMPRA ===================== */
 function finalizarCompra() {
     if (carrinho.length === 0) {
         alert("Seu carrinho está vazio.");
@@ -120,7 +124,7 @@ function finalizarCompra() {
     }
 
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
-    window.location.href = "Pagamento_conclusão.html";
+    window.location.href = "pagamento_conclusao.html";
 }
 
 /* ===================== FILTROS ===================== */
@@ -139,8 +143,5 @@ function aplicarFiltro(tipo) {
 /* ===================== INIT ===================== */
 document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
+    atualizarCarrinho();
 });
-
-
-
-
