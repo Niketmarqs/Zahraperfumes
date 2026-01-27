@@ -1,7 +1,7 @@
 /* ================= PRODUTOS (18 MODELOS) ================= */
 const produtos = [
     { id: 1, nome: "Khanjar", preco: 450, imagem: "Khanjar.png" },
-    { id: 2, nome: "Her Confession", preco: 320, imagem: "her_confession.jpg" },
+    { id: 2, nome: "Her Confession", preco: 320, imagem: "Her Confession.jfif" },
     { id: 3, nome: "Attar Al Wesal Al Wataniah", preco: 260, imagem: "Attar Al Wesal Al Wataniah.jpeg" },
     { id: 4, nome: "Lattafa Yara Rosa", preco: 260, imagem: "Lattafa Yara Rosa.jfif" },
     { id: 5, nome: "Lattafa Asad Elixir", preco: 360, imagem: "LattafaAsadPretoElixir.jpg" },
@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
     atualizarCarrinho();
 });
+
 
 
 
