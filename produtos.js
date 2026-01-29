@@ -31,34 +31,31 @@ function renderProdutos(lista) {
     container.innerHTML = "";
 
     lista.forEach(p => {
-        container.innerHTML += `
-            <div class="produto-card">
-                <div class="img-produto">
-                    <img src="${p.imagem}" alt="${p.nome}">
-                </div>
+        const card = document.createElement("div");
+        card.className = "produto-card";
 
-                <h3 class="nome-produto">${p.nome}</h3>
-                <span class="preco-atual">R$ ${p.preco.toFixed(2)}</span>
-                <div class="parcelamento">
-                    ou 2x de R$ ${(p.preco/2).toFixed(2)} sem juros
-                </div>
-
-                <button class="btn-comprar" data-id="${p.id}">
-                    COMPRAR
-                </button>
+        card.innerHTML = `
+            <div class="img-produto">
+                <img src="${p.imagem}" alt="${p.nome}">
             </div>
+
+            <h3 class="nome-produto">${p.nome}</h3>
+            <span class="preco-atual">R$ ${p.preco.toFixed(2)}</span>
+            <div class="parcelamento">
+                ou 2x de R$ ${(p.preco/2).toFixed(2)} sem juros
+            </div>
+
+            <button class="btn-comprar">COMPRAR</button>
         `;
+
+        const botao = card.querySelector(".btn-comprar");
+        botao.addEventListener("click", () => {
+            addCarrinho(p.id);
+        });
+
+        container.appendChild(card);
     });
 }
-
-/* ================= EVENTO GLOBAL DE COMPRA (CORRIGIDO) ================= */
-document.addEventListener("click", function(e) {
-    const botao = e.target.closest(".btn-comprar");
-    if (!botao) return;
-
-    const id = parseInt(botao.dataset.id);
-    addCarrinho(id);
-});
 
 /* ================= CARRINHO ================= */
 function addCarrinho(id) {
@@ -87,12 +84,10 @@ function atualizarCarrinho() {
     const countEl = document.getElementById("cart-count");
 
     let total = 0;
-
     if (itens) itens.innerHTML = "";
 
     carrinho.forEach((p, i) => {
         total += p.preco;
-
         if (itens) {
             itens.innerHTML += `
                 <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
@@ -150,5 +145,3 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
     atualizarCarrinho();
 });
-
-
