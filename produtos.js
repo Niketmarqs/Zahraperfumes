@@ -1,4 +1,4 @@
-/* ================= PRODUTOS ================= */
+/* ================= PRODUTOS (18 MODELOS) ================= */
 const produtos = [
     { id: 1, nome: "Khanjar", preco: 450, imagem: "Khanjar.png" },
     { id: 2, nome: "Her Confession", preco: 320, imagem: "Her Confession.jfif" },
@@ -38,25 +38,24 @@ function renderProdutos(lista) {
             <div class="img-produto">
                 <img src="${p.imagem}" alt="${p.nome}">
             </div>
+
             <h3 class="nome-produto">${p.nome}</h3>
             <span class="preco-atual">R$ ${p.preco.toFixed(2)}</span>
             <div class="parcelamento">
                 ou 2x de R$ ${(p.preco/2).toFixed(2)} sem juros
             </div>
-            <button class="btn-comprar" data-id="${p.id}">COMPRAR</button>
+
+            <button class="btn-comprar">COMPRAR</button>
         `;
+
+        const botao = card.querySelector(".btn-comprar");
+        botao.addEventListener("click", () => {
+            addCarrinho(p.id);
+        });
 
         container.appendChild(card);
     });
 }
-
-/* 🔥 EVENTO GLOBAL (GARANTE QUE TODOS BOTÕES FUNCIONEM) */
-document.addEventListener("click", function(e) {
-    if (e.target.classList.contains("btn-comprar")) {
-        const id = Number(e.target.getAttribute("data-id"));
-        addCarrinho(id);
-    }
-});
 
 /* ================= CARRINHO ================= */
 function addCarrinho(id) {
@@ -108,13 +107,17 @@ function atualizarCarrinho() {
 
 /* ================= UI ================= */
 function abrirCarrinho() {
-    document.getElementById("sidebar-cart").classList.add("active");
-    document.getElementById("overlay").style.display = "block";
+    const cart = document.getElementById("sidebar-cart");
+    const overlay = document.getElementById("overlay");
+    if (cart) cart.classList.add("active");
+    if (overlay) overlay.style.display = "block";
 }
 
 function toggleCart() {
     const cart = document.getElementById("sidebar-cart");
     const overlay = document.getElementById("overlay");
+    if (!cart || !overlay) return;
+
     cart.classList.toggle("active");
     overlay.style.display = cart.classList.contains("active") ? "block" : "none";
 }
@@ -125,6 +128,7 @@ function finalizarCompra() {
         alert("Seu carrinho está vazio.");
         return;
     }
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
     window.location.href = "Pagamento_conclusão.html";
 }
 
