@@ -51,12 +51,13 @@ function renderProdutos(lista) {
     });
 }
 
-/* ================= EVENTO GLOBAL DE COMPRA ================= */
+/* ================= EVENTO GLOBAL DE COMPRA (CORRIGIDO) ================= */
 document.addEventListener("click", function(e) {
-    if (e.target.classList.contains("btn-comprar")) {
-        const id = parseInt(e.target.getAttribute("data-id"));
-        addCarrinho(id);
-    }
+    const botao = e.target.closest(".btn-comprar");
+    if (!botao) return;
+
+    const id = parseInt(botao.dataset.id);
+    addCarrinho(id);
 });
 
 /* ================= CARRINHO ================= */
@@ -84,37 +85,44 @@ function atualizarCarrinho() {
     const itens = document.getElementById("cart-items");
     const totalEl = document.getElementById("cart-total");
     const countEl = document.getElementById("cart-count");
-    if (!itens) return;
 
     let total = 0;
-    itens.innerHTML = "";
+
+    if (itens) itens.innerHTML = "";
 
     carrinho.forEach((p, i) => {
         total += p.preco;
-        itens.innerHTML += `
-            <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-                <span>${p.nome}</span>
-                <div>
-                    R$ ${p.preco.toFixed(2)}
-                    <button onclick="removerCarrinho(${i})">✕</button>
+
+        if (itens) {
+            itens.innerHTML += `
+                <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                    <span>${p.nome}</span>
+                    <div>
+                        R$ ${p.preco.toFixed(2)}
+                        <button onclick="removerCarrinho(${i})">✕</button>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
     });
 
-    totalEl.innerText = total.toFixed(2);
-    countEl.innerText = carrinho.length;
+    if (totalEl) totalEl.innerText = total.toFixed(2);
+    if (countEl) countEl.innerText = carrinho.length;
 }
 
 /* ================= UI ================= */
 function abrirCarrinho() {
-    document.getElementById("sidebar-cart").classList.add("active");
-    document.getElementById("overlay").style.display = "block";
+    const cart = document.getElementById("sidebar-cart");
+    const overlay = document.getElementById("overlay");
+    if (cart) cart.classList.add("active");
+    if (overlay) overlay.style.display = "block";
 }
 
 function toggleCart() {
     const cart = document.getElementById("sidebar-cart");
     const overlay = document.getElementById("overlay");
+    if (!cart || !overlay) return;
+
     cart.classList.toggle("active");
     overlay.style.display = cart.classList.contains("active") ? "block" : "none";
 }
@@ -142,22 +150,5 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProdutos(produtos);
     atualizarCarrinho();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
