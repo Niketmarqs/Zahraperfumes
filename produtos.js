@@ -18,10 +18,10 @@ const produtos = [
     { id: 17, nome: "Manaal", preco: 330, cat: "M", imagem: "Manaal.jpg" },
     { id: 18, nome: "Vulcan Feu", preco: 410, cat: "M", imagem: "VulcanFeu.jfif" }
 ];
+
 let carrinho = [];
 
-
-// ================= PRODUTOS NA TELA =================
+// ================= PRODUTOS NA TELA (CORRIGIDO SEM A PASTA) =================
 function carregarProdutos() {
     const lista = document.getElementById('lista-produtos');
     if (!lista) return;
@@ -32,7 +32,7 @@ function carregarProdutos() {
         lista.innerHTML += `
             <div class="produto-card">
                 <div class="img-box">
-                    <img src="imagens/${p.imagem}" alt="${p.nome}" onerror="this.src='logopaulo.png'">
+                    <img src="${p.imagem}" alt="${p.nome}" onerror="this.src='logopaulo.png'">
                 </div>
                 <div class="info">
                     <h3>${p.nome}</h3>
@@ -44,6 +44,7 @@ function carregarProdutos() {
     });
 }
 
+// ... (Restante das funções add, atualizar, remover, etc., permanecem iguais)
 
 // ================= ADICIONAR AO CARRINHO =================
 function add(id) {
@@ -54,7 +55,6 @@ function add(id) {
         toggleCart();
     }
 }
-
 
 // ================= ATUALIZA CARRINHO =================
 function atualizar() {
@@ -82,15 +82,11 @@ function atualizar() {
     if (countEl) countEl.innerText = carrinho.length;
 }
 
-
-// ================= REMOVER ITEM =================
 function remover(i) {
     carrinho.splice(i, 1);
     atualizar();
 }
 
-
-// ================= ABRIR/FECHAR CARRINHO =================
 function toggleCart() {
     const sidebar = document.getElementById('sidebar-cart');
     const overlay = document.getElementById('overlay');
@@ -100,40 +96,22 @@ function toggleCart() {
     }
 }
 
-
-// ================= IR PARA PAGAMENTO =================
-function irParaPagamento() {
+function finalizarCompra() {
     if (carrinho.length === 0) {
         alert("Seu carrinho está vazio!");
         return;
     }
-
     const total = carrinho.reduce((a, b) => a + b.preco, 0);
     let resumo = "Olá! Gostaria de encomendar:\n\n";
     carrinho.forEach(p => resumo += `• ${p.nome} (R$ ${p.preco})\n`);
-
     localStorage.setItem('resumoPedido', resumo);
     localStorage.setItem('totalPedido', total.toFixed(2));
-
     window.location.href = "pagamento.html";
 }
 
-
-// BOTÃO DO HTML CHAMA ESSE NOME
-function finalizarCompra() {
-    irParaPagamento();
-}
-
-
-// ================= INICIALIZAÇÃO =================
 document.addEventListener("DOMContentLoaded", carregarProdutos);
 
-
-// DEIXAR FUNÇÕES GLOBAIS
 window.add = add;
 window.remover = remover;
 window.toggleCart = toggleCart;
 window.finalizarCompra = finalizarCompra;
-
-
-
