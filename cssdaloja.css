@@ -138,8 +138,8 @@ body {
     box-shadow: var(--shadow-strong);
 }
 
-/* ===================== IMAGEM ===================== */
-.img-produto {
+/* ===================== IMAGEM (COMPATÍVEL COM JS) ===================== */
+.img-box {
     height: 200px;
     display: flex;
     align-items: center;
@@ -147,37 +147,33 @@ body {
     margin-bottom: 18px;
 }
 
-.img-produto img {
+.img-box img {
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
     transition: .4s;
 }
 
-.produto-card:hover img {
+.produto-card:hover .img-box img {
     transform: scale(1.08);
 }
 
-/* ===================== TEXTO ===================== */
-.nome-produto {
+/* ===================== TEXTO (COMPATÍVEL COM JS) ===================== */
+.info h3 {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 6px;
 }
 
-.preco-atual {
+.preco {
     font-size: 20px;
     font-weight: 700;
+    display: block;
+    margin-bottom: 14px;
 }
 
-.parcelamento {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 16px;
-}
-
-/* ===================== BOTÃO COMPRAR ===================== */
-.btn-comprar {
+/* ===================== BOTÃO COMPRAR (COMPATÍVEL COM JS) ===================== */
+.btn-add {
     width: 100%;
     padding: 14px;
     border-radius: 18px;
@@ -190,7 +186,7 @@ body {
     transition: all .35s ease;
 }
 
-.btn-comprar:hover {
+.btn-add:hover {
     background: linear-gradient(135deg, #000, #0f172a);
     transform: scale(1.05);
 }
@@ -203,6 +199,10 @@ body {
     backdrop-filter: blur(3px);
     display: none;
     z-index: 2000;
+}
+
+#overlay.active {
+    display: block;
 }
 
 /* ===================== CARRINHO LATERAL ===================== */
@@ -224,7 +224,6 @@ body {
     right: 0;
 }
 
-/* HEADER */
 .carrinho-header {
     padding: 24px;
     display: flex;
@@ -233,32 +232,12 @@ body {
     border-bottom: 1px solid var(--border);
 }
 
-.carrinho-header h3 {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.carrinho-header button {
-    background: none;
-    border: none;
-    font-size: 30px;
-    cursor: pointer;
-}
-
-/* BODY */
 .carrinho-body {
     flex: 1;
     padding: 24px;
     overflow-y: auto;
 }
 
-.carrinho-body div {
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-}
-
-/* FOOTER */
 .carrinho-footer {
     padding: 24px;
     border-top: 1px solid var(--border);
